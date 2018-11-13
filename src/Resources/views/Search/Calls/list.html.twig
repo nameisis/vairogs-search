@@ -1,0 +1,81 @@
+{% import 'Search/Calls/macros.html.twig' as macros %}
+
+<div class="accordion">
+    {% if calls is empty %}
+        <h4>No queries have been made/logged in this request</h4>
+    {% else %}
+        {% for i, route in calls %}
+            {% for q, query in route %}
+                {% set clickable = false %}
+                {% if query.body is not empty or query.response is not empty or query.errors|length > 0 %}
+                    {% set clickable = true %}
+                {% endif %}
+                <section class="call">
+                    <header class="{% if clickable %}accordion-header{% else %}accordion-no-click{% endif %} {{ query.method|lower }}">
+                        <span class="method-name">{{ query.method }}</span>
+
+                        {% set host = '' %}
+                        {% if query.scheme is defined %}
+                            {% set host = host ~ query.scheme ~ "://" %}
+                        {% endif %}
+                        {% set host = host ~ query.host %}
+                        {% if query.port is defined %}
+                            {% set host = host ~ ':' ~ query.port %}
+                        {% endif %}
+                        {% set host = host ~ query.path %}
+
+                        {% if query.method == 'GET' %}
+                            <a href="{{ host }}" target="_blank" class="path">{{ host }}</a>
+                        {% else %}
+                            <span class="path">{{ host }}</span>
+                        {% endif %}
+                        {% set statusCode = 400 %}
+                        {% if query.context["HTTP code"] is not null %}
+                            {% set statusCode = query.context["HTTP code"] %}
+                        {% endif %}
+                        <span class="badge status-code {{ statusCode|vairogs_status_code_class }}">{{ statusCode }}</span>
+                        {% set time = query.time / 1000 %}
+                        {% if time > 1 %}
+                            {% set duration_color = 'error' %}
+                        {% elseif time < 0.2 %}
+                            {% set duration_color = 'success' %}
+                        {% else %}
+                            {% set duration_color = 'warning' %}
+                        {% endif %}
+                        <span class="badge duration {{ duration_color }}">{{ time|vairogs_format_duration }}</span>
+                    </header>
+
+                    {% if clickable %}
+                    <div class="accordion-content">
+                        <div class="sf-tabs">
+                            {% if query.body is not empty %}
+                            <div class="tab">
+                                <h3 class="tab-title">Request</h3>
+                                <div class="tab-content">
+                                    {{ macros.render_body(query.body) }}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if query.errors|length == 0 %}
+                                <div class="tab">
+                                    <h3 class="tab-title">Response</h3>
+                                    <div class="tab-content">
+                                        {{ macros.render_body(query.response) }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="tab">
+                                    <h3 class="tab-title">Error</h3>
+                                    <div class="tab-content">
+                                        {{ macros.render_body(query.response) }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+</div>

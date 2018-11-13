@@ -1,0 +1,63 @@
+{% extends app.request.isXmlHttpRequest ? '@WebProfiler/Profiler/ajax_layout.html.twig' : '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon -%}
+        {{ include('Search/search.svg') }}
+        <span class="sf-toolbar-value">{{ collector.data.count }}</span>
+    {%- endset %}
+
+    {% if collector.data.count > 15 %}
+        {% set status = 'red' %}
+    {% elseif collector.data.count > 3 %}
+        {% set status = 'yellow' %}
+    {% elseif collector.data.count > 1 %}
+        {% set status = 'green' %}
+    {% else %}
+        {% set status = 'normal' %}
+    {% endif %}
+
+    {% if collector.data.time == 0 %}
+        {% set time_color = 'normal' %}
+    {% elseif collector.data.time < 1 %}
+        {% set time_color = 'green' %}
+    {% elseif collector.data.time > 1 and collector.data.time < 5 %}
+        {% set time_color = 'yellow' %}
+    {% else %}
+        {% set time_color = 'red' %}
+    {% endif %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Queries</b>
+            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">{{ collector.data.count }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Query time</b>
+            <span class="sf-toolbar-status sf-toolbar-status-{{ time_color }}">{{ collector.data.time|vairogs_format_duration }}</span>
+        </div>
+    {% endset %}
+    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url, status: status } %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">
+            {{ include('Search/search.svg') }}
+        </span>
+        <strong>Elasticsearch</strong>
+        <span class="count">
+            <span>{{ collector.data.count }}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Elasticsearch</h2>
+    {{ include("Search/Calls/list.html.twig", { calls: collector.data.queries }) }}
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/vairogs/css/screen.css') }}">
+    <script src="{{ asset('bundles/vairogs/js/guzzle.min.js') }}"></script>
+{% endblock %}

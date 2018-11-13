@@ -1,0 +1,97 @@
+services:
+    vairogs.utils.search.export:
+        class: '%vairogs.utils.search.export.class%'
+
+    vairogs.utils.search.import:
+        class: '%vairogs.utils.search.import.class%'
+
+    vairogs.utils.search.client.index_suffix_finder:
+        class: '%vairogs.utils.search.client.index_suffix_finder.class%'
+
+    vairogs.utils.search.cache_engine:
+        class: '%vairogs.utils.search.cache_engine.class%'
+        arguments:
+            - '%kernel.cache_dir%/vairogs/search'
+            - '.vairogs.search'
+
+    vairogs.utils.search.annotations.cached_reader:
+        class: '%vairogs.utils.search.annotations.cached_reader.class%'
+        arguments:
+            - '@annotations.reader'
+            - '@vairogs.utils.search.cache_engine'
+            - '%kernel.debug%'
+
+    vairogs.utils.search.document_finder:
+        class: '%vairogs.utils.search.document_finder.class%'
+        arguments:
+            - '%kernel.bundles%'
+        public: false
+
+    vairogs.utils.search.document_parser:
+        class: '%vairogs.utils.search.document_parser.class%'
+        arguments:
+            - '@vairogs.utils.search.annotations.cached_reader'
+            - '@vairogs.utils.search.document_finder'
+        public: false
+
+    vairogs.utils.search.metadata_collector:
+        class: '%vairogs.utils.search.metadata_collector.class%'
+        arguments:
+            - '@vairogs.utils.search.document_finder'
+            - '@vairogs.utils.search.document_parser'
+            - '@vairogs.utils.search.cache_engine'
+        calls:
+            -
+                - setEnableCache
+                -
+                    - '%vairogs.utils.search.cache%'
+
+    vairogs.utils.search.logger.collection_handler:
+        class: '%vairogs.utils.search.logger.collection_handler.class%'
+        public: false
+
+    vairogs.utils.search.tracer:
+        class: '%vairogs.utils.search.tracer.class%'
+        arguments:
+            - 'vairogs'
+        calls:
+            -
+                - pushHandler
+                -
+                    - '@vairogs.utils.search.logger.collection_handler'
+
+    vairogs.utils.search.profiler:
+        class: '%vairogs.utils.search.profiler.class%'
+        calls:
+            -
+                - setManagers
+                -
+                    - '%vairogs.utils.search.managers%'
+            -
+                - addLogger
+                -
+                    - '@vairogs.utils.search.tracer'
+        tags:
+            -
+                name: data_collector
+                template: '%vairogs.utils.search.profiler.template%'
+                id: vairogs.utils.search.profiler
+
+    vairogs.utils.search.result_converter:
+        class: '%vairogs.utils.search.result_converter.class%'
+        arguments:
+            - '@vairogs.utils.search.metadata_collector'
+
+    vairogs.utils.search.terminate_listener:
+        class: '%vairogs.utils.search.terminate_listener.class%'
+        arguments:
+            - '%vairogs.utils.search.managers%'
+        tags:
+            -
+                name: kernel.event_listener
+                event: kernel.terminate
+        calls:
+            -
+                - setContainer
+                -
+                    - '@service_container'

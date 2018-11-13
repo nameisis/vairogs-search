@@ -1,0 +1,35 @@
+{% macro render_headers(headers, uri) %}
+    <h4>Headers</h4>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col" class="key">Header</th>
+            <th scope="col">Value</th>
+        </tr>
+        </thead>
+        {% for header, values in headers %}
+            <tr>
+                <td>{{ header|title }}</td>
+                <td>
+                    {% if values|length > 1 %}
+                        <ul>
+                            {% for value in values %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        {{ values.0 }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro render_body(body) %}
+    <h4>Content</h4>
+    {% set lang = detect_lang(body) %}
+
+    <pre><code class="language-{{ lang }}">{{ body|vairogs_pretty_print(lang) }}</code></pre>
+{% endmacro %}
+
