@@ -38,9 +38,6 @@ final class Property
      */
     public $options = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function dump(array $exclude = []): array
     {
         return \array_diff_key(\array_merge([

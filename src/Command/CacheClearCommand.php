@@ -8,18 +8,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CacheClearCommand extends AbstractManagerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
         $this->setName('vairogs:search:cache:clear')->setDescription('Clears elasticsearch client cache.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

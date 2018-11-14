@@ -17,9 +17,6 @@ final class NestedType
      */
     public $options = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function dump(array $exclude = []): array
     {
         return \array_diff_key($this->options, $exclude);

@@ -9,18 +9,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class IndexDropCommand extends AbstractManagerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
         $this->setName('vairogs:search:index:drop')->setDescription('Drops elasticsearch index.')->addOption('force', 'f', InputOption::VALUE_NONE, 'Set this parameter to execute this command');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

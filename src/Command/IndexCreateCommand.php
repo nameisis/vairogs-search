@@ -10,18 +10,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class IndexCreateCommand extends AbstractManagerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
         $this->setName('vairogs:search:index:create')->setDescription('Creates elasticsearch index.')->addOption('time', 't', InputOption::VALUE_NONE, 'Adds date suffix to the new index name')->addOption('alias', 'a', InputOption::VALUE_NONE, 'If the time suffix is used, its nice to create an alias to the configured index name.')->addOption('no-mapping', null, InputOption::VALUE_NONE, 'Do not include mapping')->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'Don\'t trigger an error, when the index already exists')->addOption('dump', null, InputOption::VALUE_NONE, 'Prints out index mapping json');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $io = new SymfonyStyle($input, $output);

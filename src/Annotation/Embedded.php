@@ -34,9 +34,6 @@ final class Embedded
      */
     public $options;
 
-    /**
-     * {@inheritdoc}
-     */
     public function dump(array $exclude = []): array
     {
         $array = \array_diff_key(\array_filter(\get_object_vars($this), function($value) {

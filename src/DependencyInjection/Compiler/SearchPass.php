@@ -2,7 +2,6 @@
 
 namespace Vairogs\Utils\Search\DependencyInjection\Compiler;
 
-use Exception;
 use Vairogs\Utils\DependencyInjection\Component\Definable;
 use Vairogs\Utils\VairogsBundle;
 use Vairogs\Utils\Search\Service\Manager;
@@ -16,10 +15,6 @@ class SearchPass implements CompilerPassInterface
 {
     public const NAME = \VAIROGS.'.'.VairogsBundle::ALIAS.'.'.Definable::SEARCH;
 
-    /**
-     * {@inheritdoc}
-     * @throws Exception
-     */
     public function process(ContainerBuilder $container): void
     {
         if (VairogsBundle::isEnabled($container, Definable::SEARCH)) {

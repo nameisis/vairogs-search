@@ -1,3 +1,20 @@
+parameters:
+    vairogs.utils.search.logging.path: "%kernel.logs_dir%/vairogs/search_%kernel.environment%.log"
+    vairogs.utils.search.export.class: Vairogs\Utils\Search\Service\ExportService
+    vairogs.utils.search.import.class: Vairogs\Utils\Search\Service\ImportService
+    vairogs.utils.search.client.index_suffix_finder.class: Vairogs\Utils\Search\Service\IndexSuffixFinder
+    vairogs.utils.search.cache_engine.class: Doctrine\Common\Cache\FilesystemCache
+    vairogs.utils.search.annotations.cached_reader.class: Doctrine\Common\Annotations\CachedReader
+    vairogs.utils.search.document_finder.class: Vairogs\Utils\Search\Mapping\DocumentFinder
+    vairogs.utils.search.document_parser.class: Vairogs\Utils\Search\Mapping\DocumentParser
+    vairogs.utils.search.metadata_collector.class: Vairogs\Utils\Search\Mapping\MetadataCollector
+    vairogs.utils.search.logger.collection_handler.class: Vairogs\Utils\Search\Profiler\Handler\CollectionHandler
+    vairogs.utils.search.tracer.class: Monolog\Logger
+    vairogs.utils.search.profiler.class: Vairogs\Utils\Search\Profiler\ElasticsearchProfiler
+    vairogs.utils.search.profiler.template: 'Search/profiler.html.twig'
+    vairogs.utils.search.result_converter.class: Vairogs\Utils\Search\Result\Converter
+    vairogs.utils.search.terminate_listener.class: Vairogs\Utils\Search\EventListener\TerminateListener
+
 services:
     vairogs.utils.search.export:
         class: '%vairogs.utils.search.export.class%'

@@ -20,17 +20,11 @@ final class ParentDocument implements MetaField
      */
     public $class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSettings(): array
     {
         return [

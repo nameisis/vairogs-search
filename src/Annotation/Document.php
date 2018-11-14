@@ -21,9 +21,6 @@ final class Document implements DumperInterface
      */
     public $options = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function dump(array $exclude = []): array
     {
         return \array_diff_key($this->options, $exclude);

@@ -17,17 +17,11 @@ final class Routing implements MetaField
      */
     public $required = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSettings(): array
     {
         return [

@@ -5,9 +5,7 @@ namespace Vairogs\Utils\Search\DependencyInjection;
 use Vairogs\Utils\DependencyInjection\Component\Definable;
 use Psr\Log\LogLevel;
 use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
@@ -17,12 +15,6 @@ class Definition implements Definable
         Definable::SEARCH,
     ];
 
-    /**
-     * @param $extension
-     *
-     * @return ArrayNodeDefinition
-     * @throws ReflectionException
-     */
     public function getExtensionDefinition($extension): ArrayNodeDefinition
     {
         if (!\in_array($extension, self::ALLOWED, true)) {
@@ -87,10 +79,6 @@ class Definition implements Definable
         return $node;
     }
 
-    /**
-     * @return ArrayNodeDefinition|NodeDefinition
-     * @throws ReflectionException
-     */
     private function getManagersNode()
     {
         $builder = new TreeBuilder();

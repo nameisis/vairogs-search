@@ -3,8 +3,9 @@
 namespace Vairogs\Utils\Search\Exception;
 
 use Exception;
+use Vairogs\Utils\Core\Exception\VairogsException;
 
-class BulkWithErrorsException extends Exception
+class BulkWithErrorsException extends VairogsException
 {
     /**
      * @var array
