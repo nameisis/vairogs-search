@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class SearchPass implements CompilerPassInterface
 {
-    public const NAME = \VAIROGS.'.'.VairogsBundle::ALIAS.'.'.Definable::SEARCH;
+    public const NAME = VairogsBundle::FULL_ALIAS.'.'.Definable::SEARCH;
 
     public function process(ContainerBuilder $container): void
     {
